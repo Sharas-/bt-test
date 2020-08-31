@@ -1,0 +1,16 @@
+version: '3'
+services:
+    goprefs:
+        container_name: goprefs
+        build: https://github.com/Sharas-/rest_kvstore.git
+    web:
+        build: . 
+        ports:
+         - 80:80
+        volumes:
+            - ./static:/srv
+            - ./nginx:/etc/nginx
+        depends_on: 
+            - "goprefs"
+              
+
