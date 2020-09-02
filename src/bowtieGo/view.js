@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
-import TextField from '@material-ui/core/TextField';
+import {TextField, Checkbox} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import {Favorite, FavoriteBorder} from '@material-ui/icons';
 
 function Location({options, onSelected})
 {
@@ -20,21 +21,32 @@ function Doctor({doc})
 {
     return(
         <div className="doctor">
-            <span className="name">{doc.name}</span>
-            <span className="id">{doc.id}</span>
+            <span className="name">{doc.name}</span>&nbsp;
+            <span className="id">{doc.id}</span>&nbsp;
             <span className="location">{doc.location}</span>
         </div>)
+}
+
+function LikeButton({isLiked, onLikeChanged})
+{
+    const [liked, setLiked] = useState(isLiked)
+    return (<Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} checked={liked} 
+                onChange={(e)=>{setLiked(!liked); onLikeChanged(!liked)}} />)
 }
 
 function DoctorsList({doctors})
 {
     return (
-        <form action="bowtieGo/favourites">
-            <label htmlFor="doctorsList">{doctors.length}: doctors</label>
+        <figure>
+            <figcaption>{doctors.list.length}&nbsp;doctors</figcaption>
             <ul id="doctorsList">
-                {doctors.map(doc => <li key={doc.id}><Doctor doc={doc}/></li>)}
+                {doctors.list.map(doc => 
+                    <li key={Math.random()}>
+                        <Doctor doc={doc} /> 
+                        <LikeButton isLiked={doctors.isFavourite(doc)} onLikeChanged={isLiked => doctors.favouriteChanged(doc, isLiked)} />
+                    </li>)}
             </ul>
-        </form>)
+        </figure>)
 }
 
 function App({doctors})
@@ -49,8 +61,4 @@ function App({doctors})
       </div>)
 }
 
-//doctors.docsPromise.then(docs => alert(docs.all.length))
 bowtieGo.docsPromise.then(docs => ReactDOM.render(<App doctors={docs} />, document.getElementById('content')))
-//doctors.docsPromise.then(docs => alert(Array.from(docs.byLocation(Array.from(docs.locations)[3])).map(doc => JSON.stringify(doc))))
-//ReactDOM.render(TestSearch(tests), document.getElementById('testSearch'));
-
