@@ -1,14 +1,15 @@
 "use strict";
 
-const prefsUrl, docsUrl = ["prefs/favourites", "partner-doctors.js"]
+const prefsUrl = "prefs/favourites";
+const docsUrl = "partner-doctors.js";
 
 let fetchData = url => fetch(url)
     .then(resp => resp.ok ? resp.json() : Promise.reject(resp))
 
-const data = Promise.all([fetchData(prefsUrl), fetchData(docUrl)]);
+const data = Promise.all([fetchData(prefsUrl), fetchData(docsUrl)]);
 
 let _favs;
-let _locations;
+let _regions;
 
 function _saveFavs()
 {
@@ -42,7 +43,6 @@ class Doctors
             _favs.add(doc.id)
         else
             _favs.delete(doc.id)
-        console.log(`saving favs: ${Array.from(_favs)}`);
         _saveFavs();
     }
 
@@ -51,9 +51,9 @@ class Doctors
         return this._docs;
     }
 
-    get locations()
+    get regions()
     {
-        return _locations;
+        return _regions;
     }
 
     byLocation(l)
@@ -65,7 +65,7 @@ class Doctors
 const docsInit = data.then(([favs, docs]) => 
 {
     _favs = new Set(favs);
-    _locations = Array.from(docs.reduce((acc, doc) => acc.add(doc.location), new Set()));
+    _regions = Array.from(docs.reduce((acc, doc) => acc.add(doc.location), new Set()));
     return new Doctors(docs)
 });
 
