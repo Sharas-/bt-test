@@ -3,19 +3,13 @@ import ReactDOM from 'react-dom';
 import {TextField, Checkbox} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {Favorite, FavoriteBorder} from '@material-ui/icons';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@material-ui/core';
 
 function Regions({options, onSelected})
 {
     return(
         <Autocomplete
-          id="locations"
+          id="regions"
           autoHighlight
           options={options}
           onChange={(evt,val,reason) => {if(['select-option', 'clear'].includes(reason)) onSelected(val)}}

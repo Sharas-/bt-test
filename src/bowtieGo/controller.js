@@ -1,19 +1,19 @@
 "use strict";
 
-const prefsUrl = "prefs/favourites";
+const prefUrl = "prefs/favourites";
 const docsUrl = "partner-doctors.js";
 
 let fetchData = url => fetch(url)
     .then(resp => resp.ok ? resp.json() : Promise.reject(resp))
 
-const data = Promise.all([fetchData(prefsUrl), fetchData(docsUrl)]);
+const data = Promise.all([fetchData(prefUrl), fetchData(docsUrl)]);
 
 let _favs;
 let _regions;
 
 function _saveFavs()
 {
-    fetch(prefsUrl, 
+    fetch(prefUrl, 
         { method: 'PUT', 
           cache: 'no-cache',
           body: JSON.stringify(Array.from(_favs)),
